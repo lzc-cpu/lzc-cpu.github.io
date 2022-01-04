@@ -1,0 +1,267 @@
+<!--
+    THIS EXAMPLE WAS DOWNLOADED FROM https://echarts.apache.org/examples/zh/editor.html?c=sunburst-borderRadius
+-->
+<!DOCTYPE html>
+<html style="height: 100%">
+
+<head>
+    <meta charset="utf-8">
+</head>
+
+<body style="height: 100%; margin: 0">
+    <div id="container" style="height: 100%"></div>
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts@5.2.2/dist/echarts.min.js"></script>
+    <!-- Uncomment this line if you want to dataTool extension
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts@5.2.2/dist/extension/dataTool.min.js"></script>
+        -->
+    <!-- Uncomment this line if you want to use gl extension
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts-gl@2/dist/echarts-gl.min.js"></script>
+        -->
+    <!-- Uncomment this line if you want to echarts-stat extension
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts-stat@latest/dist/ecStat.min.js"></script>
+        -->
+    <!-- Uncomment this line if you want to use map
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts@5.2.2/map/js/china.js"></script>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts@5.2.2/map/js/world.js"></script>
+        -->
+    <!-- Uncomment these two lines if you want to use bmap extension
+        <script type="text/javascript" src="https://api.map.baidu.com/api?v=2.0&ak=<Your Key Here>"></script>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts@{{version}}/dist/extension/bmap.min.js"></script>
+        -->
+
+    <script type="text/javascript">
+        var dom = document.getElementById("container");
+        var myChart = echarts.init(dom);
+        var app = {};
+
+        var option;
+
+
+
+        var data = [{
+            name: '东北地区',
+            children: [{
+                name: '辽宁',
+                children: [{
+                    name: '0.23%',
+                    value: 0.23
+                }]
+            }, {
+                name: '黑龙江',
+                children: [{
+                    name: '0.21%',
+                    value: 0.21
+                }]
+            }, {
+                name: '吉林',
+                children: [{
+                    name: '0.15%',
+                    value: 0.15
+                }]
+            }]
+        }, {
+            name: '东部地区',
+            children: [{
+                name: '广东',
+                children: [{
+                    name: '13.89%',
+                    value: 13.89
+                }]
+            }, {
+                name: '北京',
+                children: [{
+                    name: '6.37%',
+                    value: 6.37
+                }]
+            }, {
+                name: '上海',
+                children: [{
+                    name: '4.08%',
+                    value: 4.08
+                }]
+            }, {
+                name: '江苏',
+                children: [{
+                    name: '3.44%',
+                    value: 3.44
+                }]
+            }, {}, {
+                name: '山东',
+                children: [{
+                    name: '2.31%',
+                    value: 2.31
+                }]
+            }, {
+                name: '河北',
+                children: [{
+                    name: '1.67%',
+                    value: 1.67
+                }]
+            }, {
+                name: '福建',
+                children: [{
+                    name: '1.34%',
+                    value: 1.34
+
+                }]
+            }, {
+                name: '天津',
+                children: [{
+                    name: '1.21%',
+                    value: 1.21
+
+                }]
+            }, {
+                name: '海南',
+                children: [{
+                    name: '0.39%',
+                    value: 0.39
+
+                }]
+            }]
+        }, {
+            name: '中部地区',
+            children: [{
+                name: '湖北',
+                children: [{
+                    name: '36.47%',
+                    value: 36.47
+                }]
+            }, {
+                name: '湖南',
+                children: [{
+                    name: '3.16%',
+                    value: 3.16
+                }]
+            }, {
+                name: '河南',
+                children: [{
+                    name: '3.08%',
+                    value: 3.08
+                }]
+            }, {
+                name: '安徽',
+                children: [{
+                    name: '1.85%',
+                    value: 1.85
+                }]
+            }, {
+                name: '江西',
+                children: [{
+                    name: '0.82%',
+                    value: 0.82
+                }]
+            }, {
+                name: '山西',
+                children: [{
+                    name: '0.56%',
+                    value: 0.56
+                }]
+            }]
+        }, {
+            name: '西部地区',
+            children: [{
+                name: '四川',
+                children: [{
+                    name: '2.72%',
+                    value: 2.72
+                }]
+            }, {
+                name: '重庆',
+                children: [{
+                    name: '1.82%',
+                    value: 1.82
+                }]
+            }, {
+                name: '新疆',
+                children: [{
+                    name: '1.75%',
+                    value: 1.75
+                }]
+            }, {
+                name: '陕西',
+                children: [{
+                    name: '1.62%',
+                    value: 1.62
+                }]
+            }, {
+                name: '广西',
+                children: [{
+                    name: '1.57%',
+                    value: 1.57
+                }]
+            }, {
+                name: '云南',
+                children: [{
+                    name: '0.95%',
+                    value: 0.95
+                }]
+            }, {
+                name: '贵州',
+                children: [{
+                    name: '0.74%',
+                    value: 0.74
+                }]
+            }, {
+                name: '甘肃',
+                children: [{
+                    name: '0.72%',
+                    value: 0.72
+                }]
+            }, {
+                name: '内蒙古',
+                children: [{
+                    name: '0.67%',
+                    value: 0.67
+                }]
+            }, {
+                name: '西藏',
+                children: [{
+                    name: '0.46%',
+                    value: 0.46
+                }]
+            }, {
+                name: '宁夏',
+                children: [{
+                    name: '0.36%',
+                    value: 0.36
+                }]
+            }, {
+                name: '青海',
+                children: [{
+                    name: '0.26%',
+                    value: 0.26
+                }]
+            }]
+
+        }];
+        option = {
+            name: '师资力量',
+            backgroundColor: '#2E2733',
+            color: ['#FFC1C1', '#00CD00', '#2F93C8', '#FFDB5C'],
+            series: {
+                type: 'sunburst',
+                data: data,
+                radius: [60, '90%'],
+                itemStyle: {
+                    borderRadius: 7,
+                    borderWidth: 2
+                },
+                label: {
+                    rotate: 'radial',
+                    color: '#000',
+                    textBorderColor: '#fff',
+                    textBorderWidth: 2,
+                },
+
+            }
+        };
+
+        if (option && typeof option === 'object') {
+            myChart.setOption(option);
+        }
+    </script>
+</body>
+
+</html>
