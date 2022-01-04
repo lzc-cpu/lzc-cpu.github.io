@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>迁徙图</title>
+
+    <style>
+        html,
+        body,
+        #map {
+            padding: 0;
+            margin: 0;
+            height: 100%;
+            width: 100%;
+        }
+        
+        .mytitle {
+            z-index: 1000;
+            color: #fff;
+            font-size: 16px;
+            text-align: center;
+            position: absolute;
+            top: 10px;
+            left: 40%;
+            width: 20%
+        }
+    </style>
+    <!--<link rel="stylesheet" href="http://localhost/arcgis_js_api/library/4.10/esri/css/main.css">-->
+    <link rel="stylesheet" href="https://js.arcgis.com/4.11/esri/themes/light/main.css" />
+    <script src="src/echarts.min.js"></script>
+    <script src="src/echarts-gl.min.js"></script>
+    <script>
+        var dojoConfig = {
+            parseOnLoad: true,
+            packages: [{
+                name: "src",
+                location: location.pathname.replace(/\/[^/]+$/, "") + "/src"
+            }]
+        };
+    </script>
+    <!--<script src="http://localhost/arcgis_js_api/library/4.10/init.js"></script>-->
+    <script src="https://js.arcgis.com/4.11/"></script>
+    <script>
+        var map;
+
+        require([
+            "esri/Map",
+            "esri/Basemap",
+            "esri/layers/FeatureLayer",
+            "esri/layers/TileLayer",
+            "src/echartsLayer",
+            "esri/views/SceneView",
+            "esri/views/MapView",
+            "dojo/domReady!"
+        ], function(
+            Map, Basemap, FeatureLayer, TileLayer, echartsLayer, SceneView, MapView
+        ) {
+            var layer = new TileLayer({
+                url: "http://map.geoq.cn/ArcGIS/rest/services/ChinaOnlineStreetPurplishBlue/MapServer"
+            });
+            let provinceLayer = new FeatureLayer({
+                url: "https://services3.arcgis.com/XDzy9VWpT2sZyZqz/arcgis/rest/services/Privace/FeatureServer/0"
+            });
+
+            var customBasemap = new Basemap({
+                baseLayers: [layer],
+                title: "Custom Basemap",
+                id: "myBasemap"
+            });
+            var map = new Map({
+                basemap: customBasemap
+            });
+            var view = new SceneView({
+                //var view = new MapView({
+                center: [115.0, 32.8], // long, lat
+                container: 'map',
+                map: map,
+                zoom: 5
+            });
+
+
+            var geoCoordMap = {
+                '中国地质大学（武汉）': [114.400141, 30.522279],
+                '山西省': [112.563627, 37.86388],
+                '北京市': [116.411087, 39.899854],
+                '天津市': [117.219014, 39.106335],
+                '上海市': [121.465592, 31.224566],
+                '重庆市': [106.568786, 29.559948],
+                '河北省': [114.521071, 38.036379],
+                '辽宁省': [123.455141, 41.80233],
+                '吉林省': [125.34753, 43.875518],
+                '黑龙江省': [126.644935, 45.735449],
+                '江苏省': [118.804623, 32.053068],
+                '浙江省': [120.169311, 30.255578],
+                '安徽省': [117.235678, 31.768192],
+                '福建省': [119.305321, 26.069997],
+                '江西省': [115.914271, 28.668507],
+                '山东省': [117.021693, 36.649844],
+                '河南省': [113.765129, 34.760326],
+                '湖北省': [114.339819, 30.548614],
+                '湖南省': [112.971207, 28.102466],
+                '广东省': [113.268977, 23.131036],
+                '海南省': [110.333116, 20.019824],
+                '四川省': [104.078062, 30.629764],
+                '贵州省': [106.705849, 26.611781],
+                '云南省': [102.712251, 25.040609],
+                '陕西省': [108.95579, 34.28058],
+                '甘肃省': [103.823851, 36.050994],
+                '青海省': [101.791632, 36.633645],
+                '台湾省': [120.907637, 23.725125],
+                '内蒙古自治区': [111.770306, 40.814857],
+                '广西壮族自治区': [108.310376, 22.806877],
+                '宁夏回族自治区': [106.261583, 38.484109],
+                '新疆维吾尔族自治区': [87.620827, 43.819221],
+                '香港特别行政区': [114.1844, 22.270577],
+                '澳门特别行政区': [113.585509, 22.140142],
+                '西藏自治区': [91.117212, 29.646922]
+            };
+
+            var CUGData1 = [
+                [{
+                    name: '中国地质大学（武汉）'
+                }, {
+                    name: '湖北省',
+                    value: 16
+                }],
+                [{
+                    name: '中国地质大学（武汉）'
+                }, {
+                    name: '广东省',
+                    value: 14
+                }],
+                [{
+                    name: '中国地质大学（武汉）'
+                }, {
+                    name: '北京市',
+                    value: 9
+                }],
+                [{
+                    name: '中国地质大学（武汉）'
+                }, {
+                    name: '浙江省',
+                    value: 16
+                }]
+            ];
+            var CUGData2 = [
+                [{
+                    name: '中国地质大学（武汉）'
+                }, {
+                    name: '上海市',
+                    value: 14
+                }],
+                [{
+                    name: '中国地质大学（武汉）'
+                }, {
+                    name: '江苏省',
+                    value: 9
+                }],
+                [{
+                    name: '中国地质大学（武汉）'
+                }, {
+                    name: '湖南省',
+                    value: 16
+                }],
+                [{
+                    name: '中国地质大学（武汉）'
+                }, {
+                    name: '河南省',
+                    value: 14
+                }],
+                [{
+                    name: '中国地质大学（武汉）'
+                }, {
+                    name: '四川省',
+                    value: 9
+                }],
+                [{
+                    name: '中国地质大学（武汉）'
+                }, {
+                    name: '山东省',
+                    value: 16
+                }],
+            ];
+            var CUGData3 = [
+                [{
+                    name: '中国地质大学（武汉）'
+                }, {
+                    name: '安徽省',
+                    value: 14
+                }],
+                [{
+                    name: '中国地质大学（武汉）'
+                }, {
+                    name: '重庆市',
+                    value: 9
+                }],
+                [{
+                    name: '中国地质大学（武汉）'
+                }, {
+                    name: '新疆维吾尔族自治区',
+                    value: 16
+                }],
+                [{
+                    name: '中国地质大学（武汉）'
+                }, {
+                    name: '河北省',
+                    value: 14
+                }],
+                [{
+                    name: '中国地质大学（武汉）'
+                }, {
+                    name: '陕西省',
+                    value: 9
+                }],
+                [{
+                    name: '中国地质大学（武汉）'
+                }, {
+                    name: '广西壮族自治区',
+                    value: 16
+                }],
+                [{
+                    name: '中国地质大学（武汉）'
+                }, {
+                    name: '福建省',
+                    value: 14
+                }]
+            ]
+            var CUGData4 = [
+                [{
+                    name: '中国地质大学（武汉）'
+                }, {
+                    name: '天津市',
+                    value: 9
+                }],
+                [{
+                    name: '中国地质大学（武汉）'
+                }, {
+                    name: '云南省',
+                    value: 16
+                }],
+                [{
+                    name: '中国地质大学（武汉）'
+                }, {
+                    name: '江西省',
+                    value: 14
+                }],
+                [{
+                    name: '中国地质大学（武汉）'
+                }, {
+                    name: '贵州省',
+                    value: 9
+                }],
+                [{
+                    name: '中国地质大学（武汉）'
+                }, {
+                    name: '甘肃省',
+                    value: 16
+                }],
+                [{
+                    name: '中国地质大学（武汉）'
+                }, {
+                    name: '内蒙古自治区',
+                    value: 14
+                }],
+                [{
+                    name: '中国地质大学（武汉）'
+                }, {
+                    name: '山西省',
+                    value: 9
+                }],
+                [{
+                    name: '中国地质大学（武汉）'
+                }, {
+                    name: '西藏自治区',
+                    value: 9
+                }]
+            ]
+            var CUGData5 = [
+                [{
+                    name: '中国地质大学（武汉）'
+                }, {
+                    name: '海南省',
+                    value: 16
+                }],
+                [{
+                    name: '中国地质大学（武汉）'
+                }, {
+                    name: '宁夏回族自治区',
+                    value: 14
+                }],
+                [{
+                    name: '中国地质大学（武汉）'
+                }, {
+                    name: '青海省',
+                    value: 9
+                }],
+                [{
+                    name: '中国地质大学（武汉）'
+                }, {
+                    name: '辽宁省',
+                    value: 9
+                }],
+                [{
+                    name: '中国地质大学（武汉）'
+                }, {
+                    name: '黑龙江省',
+                    value: 16
+                }],
+                [{
+                    name: '中国地质大学（武汉）'
+                }, {
+                    name: '吉林省',
+                    value: 14
+                }]
+            ];
+
+            var planePath = 'path://M1705.06,1318.313v-89.254l-319.9-221.799l0.073-208.063c0.521-84.662-26.629-121.796-63.961-121.491c-37.332-0.305-64.482,36.829-63.961,121.491l0.073,208.063l-319.9,221.799v89.254l330.343-157.288l12.238,241.308l-134.449,92.931l0.531,42.034l175.125-42.917l175.125,42.917l0.531-42.034l-134.449-92.931l12.238-241.308L1705.06,1318.313z';
+
+            var convertData = function(data) {
+                var res = [];
+                for (var i = 0; i < data.length; i++) {
+                    var dataItem = data[i];
+                    var fromCoord = geoCoordMap[dataItem[0].name];
+                    var toCoord = geoCoordMap[dataItem[1].name];
+                    if (fromCoord && toCoord) {
+                        res.push({
+                            fromName: dataItem[0].name,
+                            toName: dataItem[1].name,
+                            coords: [fromCoord, toCoord],
+                            value: dataItem[1].value
+                        });
+                    }
+                }
+                return res;
+            };
+            //var color = ['#de1c31', '#AB3A61', '#705D98', '#3D79C6', '#0079FF'];
+            var color = ['#a50f15', '#de2d26', '#fb6a4a', '#fcae91', '#fee5d9'];
+            var series = [];
+            [
+                ['地大', CUGData1],
+                ['上海', CUGData2],
+                ['广州', CUGData3],
+                ['广州', CUGData4],
+                ['广州', CUGData5],
+            ].forEach(function(item, i) {
+                series.push({
+                    name: item[0] + ' Top10',
+                    type: 'lines',
+                    coordinateSystem: 'arcgis',
+                    //zlevel: 1,
+                    effect: {
+                        show: true,
+                        period: 5,
+                        trailLength: 0.7,
+                        color: '#fff',
+                        symbolSize: 3
+                    },
+                    lineStyle: {
+                        normal: {
+                            color: color[i],
+                            width: 2,
+                            curveness: 0.2,
+                            opacity: 0.2
+                        }
+                    },
+                    data: convertData(item[1])
+                }, {
+                    name: item[0] + ' Top10',
+                    type: 'lines',
+                    coordinateSystem: 'arcgis',
+                    //zlevel: 2,
+                    symbol: ['none', 'arrow'],
+                    symbolSize: 8,
+                    effect: {
+                        show: true,
+                        period: 5,
+                        trailLength: 0.6,
+                        symbol: "pin",
+                        symbolSize: 9,
+                        "color": "#FFE53B"
+                    },
+                    lineStyle: {
+                        normal: {
+                            color: color[i],
+                            width: 1.5,
+                            opacity: 0.6,
+                            curveness: 0.2
+                        }
+                    },
+                    data: convertData(item[1])
+                }, {
+                    name: item[0] + ' Top10',
+                    type: 'lines',
+                    coordinateSystem: 'arcgis',
+                    //zlevel: 2,
+                    symbol: ['none', 'arrow'],
+                    symbolSize: 8,
+                    effect: {
+                        show: true,
+                        period: 5,
+                        trailLength: 0.6,
+                        symbol: "pin",
+                        symbolSize: 9,
+                        "color": "#FFE53B"
+                    },
+                    lineStyle: {
+                        normal: {
+                            color: color[i],
+                            width: 1.5,
+                            opacity: 0.6,
+                            curveness: 0.2
+                        }
+                    },
+                    data: convertData(item[1])
+                });
+            });
+
+            view.on('layerview-create', function() {
+                var chart = new echartsLayer(view, echarts);
+                var option = {
+                    title: {
+                        text: '',
+                        subtext: '',
+                        left: 'center',
+                        textStyle: {
+                            color: '#fff'
+
+                        }
+                    },
+                    series: series
+                };
+                chart.setChartOption(option);
+            });
+        });
+    </script>
+</head>
+
+<body class="tundra">
+    <div id="map"></div>
+    <span class="mytitle"></span>
+</body>
+
+</html>
